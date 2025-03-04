@@ -24,6 +24,17 @@ jobs:
       - name: Setup pages
         id: pages
         uses: actions/configure-pages@v5
+
+
+      - name: Add Rust to the PATH
+        run: echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+      - name: Install Linux dependencies
+        run: ./script/linux && ./script/install-mold 2.34.0
+
+      - name: Limit target directory size
+        run: script/clear-target-dir-if-larger-than 100
+
       - name: Clean docs folder
         run: cargo clean --doc
       - name: Build docs
